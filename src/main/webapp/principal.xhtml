@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+<h:head>  
+	<title>Pantalla principal</title>
+	<h:outputStylesheet library="css" name="styles.css"></h:outputStylesheet>
+	<meta name="viewport" content="width=device-width, user-scalable=no"></meta>
+</h:head>
+<h:body>
+
+	<p:outputLabel value="Bievenido #{sessionController.usuarioDTO.usuario} a la pantalla principal"></p:outputLabel>
+	
+	<h:form>
+		<p:commandButton value="Cerrar Sesión" action="#{sessionClosedController.cerrarSession}"></p:commandButton>
+	
+		<p:dataTable id="tblEmpleados" var="empleado" value="#{principalController.empleados}" paginator="true" rows="10" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" reflow="true"
+                 rowsPerPageTemplate="5,10,15" emptyMessage="No se encontraron registros" filteredValue="#{principalController.empleadosFiltrados}">
+			
+			
+			<f:facet name="{Exporters}">
+	            <div style="float:right;padding-top: 5px;">
+	                <h:commandLink>
+	                    <p:graphicImage name="imgs/excel.png" width="24"/>
+	                    <p:dataExporter type="xls" target="tblEmpleados" fileName="ReporteEmpleados" />
+	                </h:commandLink>
+	                 
+	                <h:commandLink>
+	                    <p:graphicImage name="imgs/xlsx.png" width="24"/>
+	                    <p:dataExporter type="xlsxstream" target="tblEmpleados" fileName="ReporteEmpleados" />
+	                </h:commandLink>
+	 
+	                <h:commandLink>
+	                    <p:graphicImage name="imgs/pdf.png" width="24"/>
+	                    <p:dataExporter type="pdf" target="tblEmpleados" fileName="ReporteEmpleados"/>
+	                </h:commandLink>
+	 
+	                <h:commandLink>
+	                    <p:graphicImage name="imgs/csv.png" width="24"/>
+	                    <p:dataExporter type="csv" target="tblEmpleados" fileName="ReporteEmpleados" />
+	                </h:commandLink>
+	 
+	                <h:commandLink>
+	                    <p:graphicImage name="imgs/xml.png" width="24"/>
+	                    <p:dataExporter type="xml" target="tblEmpleados" fileName="ReporteEmpleados" />
+	                </h:commandLink>                     
+	            </div>
+	        </f:facet>
+			
+			<p:column headerText="Nombre" filterBy="#{empleado.nombre}" filterMatchMode="contains" sortBy="#{empleado.nombre}">
+				<h:outputText value="#{empleado.nombre}"></h:outputText>
+			</p:column>
+			
+			<p:column headerText="Primer Apellido" filterBy="#{empleado.primerApellido}" filterMatchMode="contains" sortBy="#{empleado.primerApellido}">
+				<h:outputText value="#{empleado.primerApellido}"></h:outputText>
+			</p:column>
+			
+			<p:column headerText="Segundo Apellido" filterBy="#{empleado.segundoApellido}" filterMatchMode="contains" sortBy="#{empleado.segundoApellido}">
+				<h:outputText value="#{empleado.segundoApellido}"></h:outputText>
+			</p:column>
+			
+			<p:column headerText="Puesto" filterBy="#{empleado.puesto}" filterMatchMode="contains" sortBy="#{empleado.puesto}">
+				<h:outputText value="#{empleado.puesto}"></h:outputText>
+			</p:column>
+			
+			<p:column headerText="Estatus">
+				<h:outputText value="HABILITADO" rendered="#{empleado.estatus}"></h:outputText>
+				<h:outputText value="INHABILITADO" rendered="#{!empleado.estatus}"></h:outputText>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+		
+</h:body>
+
+</html>
